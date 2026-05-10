@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Contact Form Receipt</title> 
+<meta name="theme-color" content="#2196F3" />
+<link rel="manifest" href="/manifest-BSP.json" />
+<link rel="icon" href="https://statuesque-tarsier-ad4726.netlify.app/SAIL-logo-5.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+
+<style>
+/*html, body {
+    /*overscroll-behavior: none;
+    overscroll-behavior-y: none;
+    touch-action: none;  Optional: disables double-tap zoom etc. 
+  } */
+    html, body {
+  overscroll-behavior-y: contain;
+}
+
+body { font-family:'Segoe UI',sans-serif; background:#f4f6f8; color:#333; padding:20px;}
+.printing{max-width:800px;margin:0 auto;background:#fff;padding:30px;border-radius:15px;box-shadow:0 4px 20px rgba(0,0,0,0.1);position:relative;}
+.header{text-align:center;margin-bottom:30px;}
+.header img{width:100px;margin-bottom:10px;}
+.header h2{margin:0;font-size:1.8em;color:#0d47a1;}
+table{width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden;box-shadow:0 0 15px rgba(0,0,0,0.1);}
+th,td{padding:15px 12px;text-align:left;vertical-align:top;}
+th{background-color:#0d47a1;color:#fff;font-weight:600;text-transform:uppercase;}
+tr:nth-child(even) td{background:#f9f9f9;}
+tr:hover td{background:#e3f2fd;transition:0.3s;}
+td.remarks{font-weight:bold;color:#d32f2f;}
+.printing::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;background-image:url(https://statuesque-tarsier-ad4726.netlify.app/SAIL-logo-5.png);background-size:contain;background-repeat:no-repeat;opacity:0.1;pointer-events:none;z-index:-1;}
+p.note{text-align:center;margin-top:30px;font-size:0.9em;color:#777;} 
+    /* Responsive */
+    @media screen and (max-width: 600px) {
+      table { display: block; overflow-x: auto; }
+      th, td { padding: 12px 8px; }
+    }
+.printing::before{
+content: "";
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    background-image: url(https://statuesque-tarsier-ad4726.netlify.app/SAIL-logo-5.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 0;}
+    
+    .certificate-border {
+  position: fixed;
+  top: 10px; left: 10px;
+  right: 10px; bottom: 10px;
+  border: 10px double #0d47a1;  /* double line */
+  border-radius: 20px;
+  box-sizing: border-box;
+  pointer-events: none; /* content ke upar interference na ho */
+  z-index: 9998;
+}
+
+/* Watermark container */
+#watermark {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.watermark-text {
+  position: absolute;
+  color: rgba(0,0,0,0.08);
+  font-size: 20px;
+  font-weight: bold;
+  transform: rotate(-30deg);
+  white-space: nowrap;
+  user-select: none;
+}
+  /* Scrollbar track */
+::-webkit-scrollbar {
+  width: 12px;  /* width of vertical scrollbar */
+  height: 12px; /* height of horizontal scrollbar */
+}
+
+/* Scrollbar track background */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background: #0d47a1;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1; /* optional border for better look */
+}
+
+/* Scrollbar thumb hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #2196F3;
+}
+::selection{
+background-color:#093d6a;
+color:white;
+}
+
+  .print-button-container {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .print-button {
+      border: none;
+    padding: 12px 22px;
+    border-radius: 28px;
+    font-size: 18px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .12);
+    cursor: pointer;
+          background: linear-gradient(90deg, #2196f3, #64b5f6);
+    color: white;
+    }
+
+     /* Hide buttons when generating PDF */
+    .no-print {
+      display: block;
+    }
+
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    th, td{
+    padding:15px 12px;
+    text-align:left;
+    vertical-align:top;
+    word-break: break-word;
+    white-space: pre-wrap;
+    page-break-inside:avoid;
+    border-bottom:1px solid #ddd;
+}
+th{
+    background-color:#0d47a1;
+    color:#fff;
+    font-weight:600;
+    text-transform:uppercase;
+}
+tr:nth-child(even) td{background:#f9f9f9;}
+tr:hover td{background:#e3f2fd;transition:0.3s;}
+td.remarks{font-weight:bold;color:#d32f2f;}
+
+.printing::before{
+    content:"";
+    position:absolute;
+    top:60%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:200px;
+    height:200px;
+    background-image: url(https://statuesque-tarsier-ad4726.netlify.app/SAIL-logo-5.png);
+    background-size:contain;
+    background-repeat:no-repeat;
+    opacity:0.1;
+    pointer-events:none;
+    z-index:0;
+}
+
+p.note{text-align:center;margin-top:30px;font-size:0.9em;color:#777;} 
+
+.print-button-container{text-align:center;padding:20px;}
+.print-button{
+    border:none;
+    padding:12px 22px;
+    border-radius:28px;
+    font-size:18px;
+    box-shadow:0 6px 12px rgba(0,0,0,.12);
+    cursor:pointer;
+    background:linear-gradient(90deg, #2196f3, #64b5f6);
+    color:white;
+    margin:5px;
+}
+
+/* Hide buttons when generating PDF / print */
+.no-print{display:block;}
+@media print{
+    .no-print{display:none !important;}
+}
+
+::-webkit-scrollbar{display:none;}
+::selection{
+  background: #0a2a5b;
+  color: white;
+}
+
+/* 🔹 Mobile Responsive */
+@media screen and (max-width: 600px) {
+    body{
+        padding: 10px;
+    }
+
+    .printing{
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    table, th, td{
+        font-size: 14px;
+    }
+
+    th, td{
+        padding: 10px 6px;
+    }
+
+    .header img{
+        width: 80px;
+    }
+}
+
+
+.animated-btn {
+  background: linear-gradient(90deg, #2196f3, #64b5f6) !important;
+  color: white !important;
+  animation: glowPulse 2s infinite, floatBtn 3s ease-in-out infinite !important;
+}
+
+
+
+/* Blue pulse glow animation */
+@keyframes glowPulse {
+  0%   { box-shadow: 0 0 5px #2196f3, 0 0 10px #64b5f6; }
+  50%  { box-shadow: 0 0 20px #2196f3, 0 0 40px #64b5f6; }
+  100% { box-shadow: 0 0 5px #2196f3, 0 0 10px #64b5f6; }
+}
+
+/* Subtle floating / shaking animation */
+@keyframes floatBtn {
+  0%   { transform: translateY(0px) rotate(0deg); }
+  25%  { transform: translateY(-2px) rotate(-1deg); }
+  50%  { transform: translateY(0px) rotate(0deg); }
+  75%  { transform: translateY(-2px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+</style>
+
+
+
+</head>
+<body>
+ 
+<!-- Skeleton Loader -->
+<div id="skeletonLoader" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md animate-pulse">
+  <div class="h-8 bg-gray-300 rounded w-2/3 mb-4"></div>
+  <div class="h-4 bg-gray-300 rounded w-1/2 mb-6"></div>
+  
+  <div class="space-y-4">
+    <div class="h-6 bg-gray-300 rounded"></div>
+    <div class="h-6 bg-gray-300 rounded w-5/6"></div>
+    <div class="h-6 bg-gray-300 rounded w-2/3"></div>
+    <div class="h-6 bg-gray-300 rounded w-4/5"></div>
+    <div class="h-6 bg-gray-300 rounded w-5/6"></div>
+    <div class="h-6 bg-gray-300 rounded w-2/3"></div>
+    <div class="h-6 bg-gray-300 rounded w-4/5"></div>
+    <div class="h-6 bg-gray-300 rounded w-5/6"></div>
+    <div class="h-6 bg-gray-300 rounded w-2/3"></div>
+    <div class="h-6 bg-gray-300 rounded w-4/5"></div>
+    <div class="h-6 bg-gray-300 rounded w-5/6"></div>
+    <div class="h-6 bg-gray-300 rounded w-2/3"></div>
+    <div class="h-6 bg-gray-300 rounded w-4/5"></div>
+  </div>
+</div>
+
+<div id="watermark"></div>
+
+<div class="printing hidden" id="receipt">
+  <div class="header">
+    <div style="display: flex;align-items: center;justify-content: center;">
+      <img src="/SAIL-logo-4.png" />
+    </div>
+    <div class="" style="color:#093d6a;text-align:center;font-weight: 900;margin-top: -45px;"><p>
+    <br>Steel Authority of India Limited</p></div>
+    <h2>Contact Form Submission Receipt</h2>
+    <p>Department of C&IT, Bhilai Steel Plant, Bhilai (Chhattisgarh)</p>
+  </div>
+
+  <table>
+    <tr>
+      <th style="width:25%;">Field</th>
+      <th style="width:55%;">Details</th>
+      <th style="width:20%;">Status / Remarks</th>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td id="rName"></td>
+<td rowspan="4" class="remarks px-4 py-2" id="remarksCell"></td>
+
+
+
+
+    </tr>
+    <tr><td>Email</td><td id="rEmail"></td></tr>
+    <tr><td>Phone</td><td id="rPhone"></td></tr>
+    <tr><td>Message</td><td id="rMessage"></td></tr>
+  </table>
+
+  <p class="note">This is an official receipt generated by the system. <br> Department of C&IT, Bhilai Steel Plant, Bhilai | Steel Authority of India Limited.
+
+  </p>
+
+  <div class="print-button-container no-print">
+    <button class="print-button animated-btn" onclick="generatePDF()">Generate Receipt</button>
+    <!--<button class="print-button" onclick="goHome()">Home</button>-->
+     <a href="/"><button class="print-button animated-btn">Go to Home</button></a>
+</div>
+
+<style>
+/* Smooth fade-in + slide */
+.smooth-line {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.8s ease;
+}
+.smooth-line.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+
+<script>
+// ✅ Text-to-Speech helper
+function speak(text) {
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'hi-IN';
+        utterance.rate = 1;
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    document.getElementById("skeletonLoader").style.display = "none";
+    document.getElementById("receipt").classList.remove("hidden");
+    speak("Updating status, please wait....");
+  }, 1800);
+});
+
+const remarksCell = document.getElementById('remarksCell');
+const printButtons = document.querySelector(".print-button-container");
+
+// Hide buttons initially
+printButtons.style.display = "none";
+
+// Stage 1: Show pending
+setTimeout(() => {
+    remarksCell.innerHTML = '<span class="text-red-600 font-semibold block mb-2 smooth-line show">Pending at General Manager, Bhilai Steel Plant</span>';
+
+    // Stage 2: Smooth loading lines
+    const loadingLines = [
+        "✅ Checking message routing...",
+        "✅ Verifying department status...",
+        "✅ Updating admin dashboard..."
+    ];
+    let idx = 0;
+    const interval = setInterval(() => {
+        if (idx < loadingLines.length) {
+            const line = document.createElement('div');
+            line.className = 'text-gray-500 text-sm mb-2 pl-2 smooth-line';
+            line.innerText = loadingLines[idx];
+            remarksCell.appendChild(line);
+
+            // trigger fade-in after append
+            setTimeout(() => line.classList.add("show"), 50);
+
+            idx++;
+        } else {
+            clearInterval(interval);
+
+            // Stage 3: Final success (smooth fade)
+            const now = new Date();
+            const options = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+            const dateStr = now.toLocaleDateString('en-US', options);
+            const timeStr = now.toLocaleTimeString('en-US',{ hour:'2-digit', minute:'2-digit', hour12:true });
+
+            // wrapper div for smooth entry
+            const finalBlock = document.createElement("div");
+            finalBlock.className = "smooth-line";
+            finalBlock.innerHTML = `
+                <div class="text-green-600 font-semibold mb-2"><p style="color:red;">✅ Status : </p>Successfully received your message.</div>
+                <div class="text-gray-600 font-semibold mb-2 pl-2"><p style="color:red;">✅ Remarks : </p>Our team will contact you at your submitted email or phone.</div>
+                <div class="text-gray-500 text-xs mb-1">Received on:<br>${dateStr}, ${timeStr}</div>
+            `;
+            remarksCell.innerHTML = ""; // clear old
+            remarksCell.appendChild(finalBlock);
+
+            // animate
+            setTimeout(() => finalBlock.classList.add("show"), 100);
+
+            // ✅ Show print buttons smoothly
+            printButtons.style.display = "flex";
+            printButtons.style.opacity = "0";
+            printButtons.style.gap = "20px"
+            printButtons.style.alignItem = "center"
+            printButtons.style.justifyContent = "center"
+            printButtons.style.transition = "opacity 1s ease";
+            setTimeout(() => { printButtons.style.opacity = "1"; }, 600);
+
+            speak("Your request status has been updated. Please generate a receipt for future reference.");
+        }
+    }, 1500); // thoda smooth delay
+}, 1900);
+</script>
+
+
+<style>
+/* Smooth slide-in animation for buttons */
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-buttons button:first-child {
+  animation: slideInLeft 0.8s ease forwards;
+}
+.animate-buttons button:last-child {
+  animation: slideInRight 0.8s ease forwards;
+}
+
+</style>
+
+<script>
+// block refresh
+window.addEventListener("keydown", function(e) {
+    if(e.key==="F5" || ((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="r")) {
+        e.preventDefault();
+        alert("Refresh blocked.");
+    }
+});
+
+// fill saved data
+const submittedData = JSON.parse(sessionStorage.getItem('submittedData') || '{}');
+document.getElementById('rName').innerText = submittedData.name || 'No data';
+document.getElementById('rEmail').innerText = submittedData.email || '-';
+document.getElementById('rPhone').innerText = submittedData.phone || '-';
+document.getElementById('rMessage').innerText = submittedData.message || '-';
+
+// generate pdf
+function generatePDF() {
+    const element = document.getElementById('receipt');
+    const clone = element.cloneNode(true);
+    clone.querySelectorAll('.no-print').forEach(btn=>btn.remove());
+    const opt = {
+        margin:0.5,
+        filename:'BSP_Contact_Form_Receipt.pdf',
+        image:{type:'jpeg', quality:0.98},
+        html2canvas:{scale:2, scrollY:0},
+        jsPDF:{unit:'in', format:'a4', orientation:'portrait'},
+        pagebreak: { mode:['css','legacy'] }
+    };
+    html2pdf().set(opt).from(clone).save();
+}
+
+/*// Home button
+function goHome() {
+    // session storage scroll position save
+    sessionStorage.setItem('returnScroll', window.scrollY || 0);
+    window.location.href = 'index.html';
+} ============== OR =========
+
+function goHome() {
+  window.location.href = 'index.html';
+}*/
+// Watermark
+
+
+
+
+    //1. Disable Right-Click (Context Menu) using JavaScript:                      
+document.addEventListener('contextmenu', function(e) {                         
+    e.preventDefault();  // Prevent right-click menu                                  
+});                                                                             
+                                                                                 
+// 2. Disable Image Download (Right-Click Image Download):                      
+document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('contextmenu', function(e) {
+        e.preventDefault();  // Prevent right-click on images
+    });
+    
+    img.addEventListener('dragstart', function(e) {
+        e.preventDefault();  // Disable dragging of images
+    });
+});
+
+//skaleton loading before open page
+window.addEventListener("DOMContentLoaded", () => {
+  // thoda delay dete hai (1.5 sec skeleton visible)
+  setTimeout(() => {
+    document.getElementById("skeletonLoader").style.display = "none";
+    document.getElementById("receipt").classList.remove("hidden");
+  }, 1500);
+});
+
+</script>
+
+
+
+<!--
+<script>
+const userName = "Bhilai Steel Plant, Bhilai | Steel Authority of India Limited";
+const userEmail = submittedData.email || '';
+const watermarkContainer = document.getElementById('watermark');
+
+// Clear old watermark
+watermarkContainer.innerHTML = '';
+watermarkContainer.style.position = 'absolute';
+watermarkContainer.style.top = '0';
+watermarkContainer.style.left = '0';
+watermarkContainer.style.width = '100%';
+watermarkContainer.style.height = '100%';
+watermarkContainer.style.pointerEvents = 'none';
+watermarkContainer.style.zIndex = '0';
+watermarkContainer.style.overflow = 'hidden';
+
+// Grid watermark
+const rows = 20;
+const cols = 10;
+const spacingY = 100; // vertical spacing
+const spacingX = 250; // horizontal spacing
+
+for(let i=0; i<rows; i++){
+  for(let j=0; j<cols; j++){
+    const wm = document.createElement('div');
+    wm.className = 'watermark-text';
+    wm.style.position = 'absolute';
+    wm.style.top = `${i * spacingY}px`;
+    wm.style.left = `${j * spacingX}px`;
+    wm.style.opacity = '0.06';
+    wm.style.fontSize = '14px';
+    wm.style.transform = 'rotate(-30deg)';
+    wm.style.whiteSpace = 'nowrap';
+    wm.style.userSelect = 'none';
+    wm.style.pointerEvents = 'none';
+    wm.style.color = '#000';
+    wm.innerText = `${userName} | ${userEmail} | ${new Date().toLocaleString()}`;
+    watermarkContainer.appendChild(wm);
+  }
+}
+
+// Update timestamp every minute
+setInterval(()=>{
+  const now = new Date().toLocaleString();
+  document.querySelectorAll('.watermark-text').forEach(el=>{
+    el.innerText = `${userName} | ${userEmail} | ${now}`;
+  });
+},60000);
+</script>
+-->
+
+</body>
+</html>

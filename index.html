@@ -1,0 +1,1815 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1 user-scalable=no" />
+  <link rel="manifest" href="/manifest-BSP.json" />
+  
+  <meta name="theme-color" content="#2196F3" />
+
+
+<!-- Android navigation bar color -->
+<meta name="theme-color" content="#2196F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#2196F3" media="(prefers-color-scheme: dark)">
+
+<!-- Explicit navigation bar color for Chrome on Android-->
+<meta name="msapplication-navbutton-color" content="#2196F3">
+
+<!-- New Chrome specific property -->
+<meta name="theme-color" content="#2196F3" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#2196F3" media="(prefers-color-scheme: dark)" />
+
+<!-- Navigation bar ka fixed color -->
+<meta name="theme-color" content="#2196F3" id="themeColor">
+<meta name="theme-color" content="#2196F3" id="themeNavBar" />
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="icon" href="https://statuesque-tarsier-ad4726.netlify.app/SAIL-logo-5.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <title>Bhilai Steel Plant</title>
+
+<!--Main CSS-->
+  <style>
+  :root{
+    --accent:#2196F3;
+    --bg:#000;
+    --card-bg:#f6eff2;
+    --card-radius:18px;
+    --gap:14px;
+  }
+
+  @media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+  * {
+  user-select: none;        /* kisi bhi element ko select nahi kar sakte */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter, Roboto, Arial, sans-serif;background:var(--card-bg);color:#000000;font: optional;}
+  .page{min-height:100%;display:flex;flex-direction:column;}
+  /* Splash */
+  #splash{align-items:center;justify-content:center;background:var(--card-bg);display:flex;flex-direction:column;position:relative;padding:20px}
+  .app-title{top:6px;left:18px;color:#fff;font-size:20px;font-weight:900}
+  .logo{width:180px;height:180px;object-fit:contain;margin:40px 0}
+  .btn{background:var(--accent);color:#fff;border:none;padding:12px 22px;border-radius:28px;font-size:18px;box-shadow:0 6px 12px rgba(0,0,0,.12);cursor:pointer}
+  .btn:active{transform:translateY(1px)}
+  /* Locations page */
+  #locationsPage{display:none;flex-direction:column;min-height:100vh}
+  .topbar{display:flex;align-items:center;gap:12px;padding:14px;background:var(--accent);color:#fff;border-bottom-left-radius: 125px;}
+  .topbar h2{margin:0;font-size:17px}
+  .icon-btn{background:transparent;border:none;color:#fff;font-size:18px;cursor:pointer}
+  .list-wrap{padding:18px;display:flex;flex-direction:column;gap:var(--gap);background:var(--card-bg);padding-bottom:0px}
+  .card{background:var(--card-bg);padding:26px 18px;border-radius:18px;border:6px solid var(--bg);display:block;font-weight:700;font-size:30px;text-decoration:none;color:#000;cursor:pointer}
+  .install-banner{position:fixed;left:12px;right:12px;bottom:18px;display:flex;justify-content:center}
+  .install-banner .small-btn{padding:10px 18px;border-radius:28px;border:none;background:#fff;color:var(--accent);font-weight:700;box-shadow:0 6px 10px rgba(0,0,0,.12);cursor:pointer}
+  /* Detail/Map section */
+  #optionPage, #detailPage, #mapPage, #imagePage {display:none;flex-direction:column;min-height:100vh;padding:18px;gap:16px;background:var(--card-bg)}
+  .section-card{background:#fff;border-radius:18px;padding:10px;box-shadow:0 3px 6px rgba(0,0,0,0.15)}
+  .section-card h3{margin-top:0}
+  .back-btn{background:#f44336;color:#fff;border:none;padding:10px 18px;border-radius:28px;cursor:pointer;font-weight:bold}
+  .action-btn{background:var(--accent);color:#fff;border:none;padding:12px 20px;border-radius:28px;cursor:pointer;font-weight:bold;margin:6px 0}
+  .action-btn {
+  padding: 10px 20px;
+  border: none;
+
+  background: #444;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.action-btn:hover {
+  transform: scale(1.05);
+}
+
+/* 🔥 Blue Animated Button */
+.animated-btn {
+  background: linear-gradient(90deg, #2196f3, #64b5f6); /* Blue gradient */
+  color: white;
+  animation: glowPulse 2s infinite, floatBtn 3s ease-in-out infinite;
+}
+
+/* Blue pulse glow animation */
+@keyframes glowPulse {
+  0%   { box-shadow: 0 0 5px #2196f3, 0 0 10px #64b5f6; }
+  50%  { box-shadow: 0 0 20px #2196f3, 0 0 40px #64b5f6; }
+  100% { box-shadow: 0 0 5px #2196f3, 0 0 10px #64b5f6; }
+}
+
+/* Subtle floating / shaking animation */
+@keyframes floatBtn {
+  0%   { transform: translateY(0px) rotate(0deg); }
+  25%  { transform: translateY(-2px) rotate(-1deg); }
+  50%  { transform: translateY(0px) rotate(0deg); }
+  75%  { transform: translateY(-2px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+  #map{height:540px;width:100%;border-radius:18px;overflow:hidden}
+  .blinking-circle {
+    width: 30px;
+    height: 14px;
+    background: red;
+    border-radius: 50%;
+    margin-top: -1px;
+    animation: blink 1s infinite;
+    box-shadow: 0 0 10px rgba(255,0,0,0.6);
+  }
+  @keyframes blink {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.3); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  
+  .loading-blur {
+  filter: blur(10px);
+    transition: filter 0.5s ease;
+
+}
+
+/* Splash page blur + fade effect */
+#splash {
+  opacity: 0;
+  filter: blur(12px);
+  transition: opacity 1.2s ease, filter 1.2s ease;
+}
+
+#splash.show {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.leaflet-control-attribution a[href="https://leafletjs.com"] {
+  display: none !important;
+}
+.leaflet-control-attribution span[aria-hidden="true"] {
+  display: none !important;
+}
+
+.leaflet-control-attribution .leaflet-attribution-flag {
+  display: none !important;
+}
+
+.leaflet-control-attribution{
+  border-top-left-radius: 10px;
+ 
+}
+
+/* Scrollbar track (background) */
+::-webkit-scrollbar {
+  width: 12px; 
+  display: none;              /* ya height: 12px; for horizontal */
+}
+
+/* Track background */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  display: none;        /* light grey background */
+}
+
+/* Scrollbar thumb (moving part) */
+::-webkit-scrollbar-thumb {
+  background: #888;          /* dark grey thumb */
+  border-radius: 6px;  
+  display: none;       /* rounded corners (optional) */
+}
+
+/* Scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;  
+  display: none;         /* darker on hover */
+}
+
+/* Card wrapper */
+.list-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+   margin-top: -30px;
+}
+
+/* Card style */
+.card {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  flex: 1 1 calc(25% - 20px); /* Default: 4 cards ek row me */
+  min-width: 180px;
+  font-size: 1rem;
+  transition: 0.3s;
+  transition: transform 0.2s ease;
+  transition: 0.3s;
+}
+
+.card:hover {
+   background-color: #2196f3;
+  color: white;
+}
+
+/* --- Media Queries --- */
+
+/* Tablets (max-width: 900px) → 2 cards ek row me */
+@media (max-width: 900px) {
+  .card {
+    flex: 1 1 calc(45% - 20px);
+    font-size: 0.95rem;
+  }
+  
+}
+
+/* Mobile (max-width: 600px) → 1 card ek row me */
+@media (max-width: 600px) {
+  .card {
+    flex: 1 1 100%;
+    font-size: 0.9rem;
+  }
+}
+
+html, body {
+  overscroll-behavior-y: contain; /* swipe down / up se page reload nahi hoga */
+}
+.page {
+  overscroll-behavior: contain; /* scrollable content me bhi swipe refresh disable */
+}
+
+
+
+  </style>
+<!--Online/Ofline Show status on machine css code-->
+   <style>
+    .banner {
+      position: fixed;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 12px;
+      color: #fff;
+      border-radius: 50px;
+      z-index: 1000;
+      width: calc(100% - 40px);
+      max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .banner span {
+      font-size: 16px;
+      font-weight: bold;
+      
+    }
+
+    .banner .close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 10px;
+      margin-top: 3px;
+    }
+   
+
+    .offline {
+      background-color: #e74c3c;
+      padding-bottom: 8px;
+      bottom: 622.4px;
+      right: -450px;
+      animation: slideInFromRight 0.6s ease-out forwards;
+    }
+
+    .online {
+      background-color: #2ecc71;
+      padding-bottom: px;
+      top: 75px;
+      left: -450px;
+      animation: slideInFromLeft 0.6s ease-out forwards;
+    }
+
+    /* Rubber bounce-in animations */
+    @keyframes slideInFromRight {
+      0% { right: -450px; transform: scaleX(0.7); }
+      60% { right: 20px; transform: scaleX(1.1); }
+      80% { right: 10px; transform: scaleX(0.95); }
+      100% { right: 20px; transform: scaleX(1); }
+    }
+
+    @keyframes slideOutToRight {
+      0% { right: 20px; transform: scaleX(1); }
+      100% { right: -450px; transform: scaleX(0.7); }
+    }
+
+    @keyframes slideInFromLeft {
+      0% { left: -450px; transform: scaleX(0.7); }
+      60% { left: 20px; transform: scaleX(1.1); }
+      80% { left: 10px; transform: scaleX(0.95); }
+      100% { left: 20px; transform: scaleX(1); }
+    }
+
+    @keyframes slideOutToLeft {
+      0% { left: 20px; transform: scaleX(1); }
+      100% { left: -450px; transform: scaleX(0.7); }
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 600px) {
+      .banner {
+        max-width: 80%;
+        font-size: 14px;
+      }
+    }
+
+    .off-icon{
+        display: flex;
+    }
+   </style>
+
+
+
+
+ <!-- Offline Message Box -->
+  <div id="offlineBanner" class="banner offline">
+<div class="off-icon">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZTfeZyVr7GyW1ygsIqMmADllxP3iwG1h6gw&s" alt="off" style="height: 25px;width: 25px;margin-top: 2px;border-radius: 100%;">
+    
+    <span style="margin-top: 6.5px;margin-left: 8px;font-size: small;font-family: monospace;">No internet connection</span>
+    
+    </div>
+        <button class="close-btn" onclick="closeBanner('offlineBanner')">
+      <svg width="20" height="20" viewBox="0 0 24 24">
+        <path fill="#fff" d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12l-4.89 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.89a1 1 0 0 0 1.41-1.41L13.41 12l4.89-4.89a1 1 0 0 0 0-1.4z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Online Message Box -->
+  <div id="onlineBanner" class="banner online">
+    <div class="off-icon">
+        <img src="https://media.istockphoto.com/id/1185464424/vector/wi-fi-internet-icon-vector-wi-fi-wlan-access-wireless-wifi-hotspot-signal-sign.jpg?s=612x612&w=0&k=20&c=t1mOV49cBXkZJqX6qIef6biAbnsWRRjmIRIRtRWKW1g=" alt="on" style="height: 20px;width: 20px;margin-top: 2px;border-radius: 100%;border: 2px solid black;">
+    
+    <span style="margin-top: 4px;margin-left: 8px;font-size: small;font-family: monospace;">Back online</span>
+    
+    </div>
+    <button class="close-btn" onclick="closeBanner('onlineBanner')">
+      <svg width="20" height="20" viewBox="0 0 24 24">
+        <path fill="#fff" d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12l-4.89 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.89a1 1 0 0 0 1.41-1.41L13.41 12l4.89-4.89a1 1 0 0 0 0-1.4z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!--For only Setup  no for sound-->
+<audio id="startupSound" autoplay preload="auto" volume="0" muted style="display:none;">
+    <source src="ai-detect.mp3" type="audio/mpeg">
+</audio>
+
+
+  <!-- Splash / Home -->
+  <main id="splash" class="page center-col">
+    <center><div class="app-title" style="color:#093d6a;text-align:center;font-weight: 1000;"><b><p><span style="color:rgb(6, 145, 145);font-weight:1000;">भिलाई इस्पात संयंत्र </span>
+    <br>   BHILAI STEEL PLANT</p></b></div></center>
+    <div>
+      <img style=" border-radius:10%; height:150px;" src="https://statuesque-tarsier-ad4726.netlify.app/SAIL-logo-5.png">
+    </div>
+    <center><div class="" style="color:#093d6a;text-align:center;font-weight: 900;margin-top: -52px;"><p>
+    <br>Steel Authority of India Limited</p></div></center>
+   <br>
+    <button id="showLocations" class="btn animated-btn">
+  Locations 
+  <!-- Location pin with blinking pulse -->
+  <svg xmlns="http://www.w3.org/2000/svg"
+       width="25" height="25" viewBox="0 0 24 24"
+       style="vertical-align: middle; overflow: visible;">
+    
+    <!-- Blinking pulse circle -->
+    <circle cx="12" cy="22" r="2" fill="rgba(255,0,0,0.6)">
+      <animate attributeName="r" values="3;8;3" dur="1.2s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite" />
+    </circle>
+
+    <!-- Location pin -->
+    <path fill="#E53935" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+  </svg>
+</button>
+
+  </main>
+
+  <!-- Locations list ◀ -->
+ <style>
+  .steel-text {
+  font-size: 42px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: 'Arial Black', sans-serif;
+  display: inline-block;
+  position: relative;
+
+  /* Metallic gradient base */
+  background: linear-gradient(
+    120deg,
+    #d7d7d7,
+    #b0b0b0e4,
+    #e0e0e0,
+    #a8a8a8,
+    #d7d7d7
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+
+  /* Raised look */
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+
+  /* Animate the background gradient */
+  animation: shine-gradient 5s linear infinite;
+}
+
+@keyframes shine-gradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+ </style>
+  <section id="locationsPage" class="page">
+    <header class="topbar">
+      <button id="backBtn1" class="icon-btn"><i class="fa-solid fa-arrow-left"></i></button>
+      <h2 class="steel-text">Bhilai Steel Plant</h2>
+    </header>
+   
+<div class="slider-container">
+  <div class="slider-wrapper">
+    <div class="slide"><img src="https://www.joharcg.com/wp-content/uploads/2019/09/bhilai-steel-plant-100-1.jpg" alt="Slide 1"></div>
+    <div class="slide"><img src="https://images.firstpost.com/wp-content/uploads/2018/10/bhilai-steel-plant-social.jpg" alt="Slide 2"></div>
+    <div class="slide"><img src="https://www.researchgate.net/publication/228914558/figure/fig1/AS:669000715497496@1536513608913/Location-map-of-sampling-sites-around-an-Integrate-Steel-Plant-Bhilai-Chhattisgarh.png" alt="Slide 3"></div>
+    <div class="slide"><img src="https://media.gettyimages.com/id/1157461888/photo/steel-manufacturing-at-sails-rourkela-plant-as-domestic-demand-set-to-grow-in-modis-push-to.jpg?s=594x594&w=0&k=20&c=I4EkdZIjr0FdRqqHbmdSq1dH-tGGIbsrNVSIV1KhBF0=" alt="Slide 4"></div>
+        <div class="slide"><img src="https://sail.co.in/sites/default/files/banner/2020-10/hot_rails_lying_on_cooling_bed__of_rail___strl_mill.JPG" alt="Slide 4"></div>
+            <div class="slide"><img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqNVwwsw2UV0RI_YJmkrTCkTk9h1QSxReDyijJZqG9yyC8yiUD9369kRcamUvnPhHqR20St3DQyJ5lkLG0wunUEZzpkbIpU1QRbUUylu8UyzVOzjuv5EiYin7EkZxfqBNFzO2rjTw=s636-k-no" alt="Slide 4"></div>
+
+    <div class="slide"><img src="https://devdiscourse.blob.core.windows.net/devnews/27_02_2020_10_32_27_1710508.JPG" alt="Slide 4"></div>
+    <div class="slide"><img src="https://cdni.rbth.com/rbthmedia/images/web/in-rbth/images/2014-08/top/top_plant.jpg" alt="Slide 4"></div>
+    <div class="slide"><img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqot5CDYTZhr008Z-93llhl8QZx87cTqzNULOY-1lK7Oxud11rE7k79AiVYF4bciVTUZSGKDW4-zz1YnAVy7TyxycgS4UNGLGl-tnqWGJkkGpPowv-LIqu5M3aWj78-9MitjltQ=w408-h306-k-no" alt="Slide 4"></div>
+
+  </div>
+  <div class="slider-arrow left">&#10094;</div>
+  <div class="slider-arrow right">&#10095;</div>
+  <div class="slider-bubbles"></div>
+</div>
+
+<style>
+  .slide img {
+    width: 100%;
+    height: 85%;       /* slide height ke hisab se fit */
+    object-fit: cover;  /* ya contain */
+    display: block;
+}
+
+.slider-container {
+  position: relative;
+  width: 92%;
+  max-width: 700px;
+  margin: 40px auto;
+  overflow: hidden; /* ensure only one image fully visible */
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  margin-top: 18px;
+
+}
+
+.slider-wrapper {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%; /* important for full width */
+}
+
+.slide {
+  flex: 0 0 100%; 
+  background: linear-gradient(180deg, #000f54 0, #000f54 100%);/* each slide takes full container width */
+}
+
+.slide img {
+  width: 100%;
+  display: block;
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+      transition: background-color 0.3s 
+ease;
+  transform: translateY(-50%);
+  font-size: 1.3em;
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+  z-index: 2;
+}
+.slider-arrow:hover{
+  background: #ffffff8d;
+  color: black;
+}
+.slider-arrow.left { left: 10px; }
+.slider-arrow.right { right: 10px; }
+
+.slider-bubbles {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.slider-bubbles span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background:rgb(237 237 237 / 77%);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.slider-bubbles span.active {
+  width: 45px;
+  height: 6px;
+  background: white;
+  border-radius: 6px;
+
+}
+</style>
+
+<script>
+const sliderWrapper = document.querySelector('.slider-wrapper');
+const slides = document.querySelectorAll('.slide');
+const leftArrow = document.querySelector('.slider-arrow.left');
+const rightArrow = document.querySelector('.slider-arrow.right');
+const bubblesContainer = document.querySelector('.slider-bubbles');
+
+let currentIndex = 0;
+const totalSlides = slides.length;
+
+// Create bubbles dynamically
+for(let i=0; i<totalSlides; i++){
+  const span = document.createElement('span');
+  if(i === 0) span.classList.add('active');
+  span.addEventListener('click', () => {
+    goToSlide(i);
+    resetAutoSlide();
+  });
+  bubblesContainer.appendChild(span);
+}
+
+const bubbles = document.querySelectorAll('.slider-bubbles span');
+
+function updateBubbles(){
+  bubbles.forEach((b,i) => {
+    b.classList.toggle('active', i===currentIndex);
+  });
+}
+
+function goToSlide(index){
+  currentIndex = index;
+  sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+  updateBubbles();
+}
+
+leftArrow.addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+  goToSlide(currentIndex);
+  resetAutoSlide();
+});
+
+rightArrow.addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % totalSlides;
+  goToSlide(currentIndex);
+  resetAutoSlide();
+});
+
+let autoSlide = setInterval(() => {
+  currentIndex = (currentIndex + 1) % totalSlides;
+  goToSlide(currentIndex);
+}, 3000);
+
+function resetAutoSlide(){
+  clearInterval(autoSlide);
+  autoSlide = setInterval(() => {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    goToSlide(currentIndex);
+  }, 3000);
+}
+
+window.addEventListener('resize', () => {
+  sliderWrapper.style.transition = 'none';
+  goToSlide(currentIndex);
+  setTimeout(() => sliderWrapper.style.transition = 'transform 0.5s ease-in-out', 50);
+});
+</script>
+
+
+    <style>
+
+.card {
+
+  
+  background: linear-gradient(270deg, #b0bec5, #eceff1, #90a4ae); /* steel shades */
+ transition: background 0.6s ease, 
+              color 0.6s ease, 
+              box-shadow 0.6s ease, 
+              transform 0.4s ease;
+  animation: steelShine 4s linear infinite;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.card {
+ 
+  overflow: hidden;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.card:hover {
+  background: linear-gradient(270deg, #607d8b, #cfd8dc, #546e7a); /* darker steel look */
+  
+  animation: steelShine 4s linear infinite;
+  box-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.6),
+    0 0 20px rgba(0, 150, 255, 0.4),
+    0 0 30px rgba(0, 150, 255, 0.3);
+  
+}
+/* Shine effect */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: shine 4s infinite;
+}
+
+/* Animation for soft shine */
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  100% {
+    left: 125%;
+  }
+}
+
+/* Gradient shine animation */
+@keyframes steelShine {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Cards styling */
+
+/* Watermark pseudo-element detailPage mapPage imagePage */
+#optionPage::before, #detailPage::before, #mapPage::before, #imagePage::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;  /* watermark width */
+    height: 200px; /* watermark height */
+    background-image: url('https://statuesque-tarsier-ad4726.netlify.app/SAIL-logo-5.png'); /* replace with your logo */
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.1; /* faded watermark */
+    pointer-events: none; /* content interacts normally */
+    z-index: 0; /* behind the cards */
+}
+
+/* Ensure cards scroll above watermark */
+
+</style>
+    <div id="listWrap" class="list-wrap"></div>
+     <!-- Footer -->
+     <style>
+
+    /* Footer Base */
+    .footer {
+      position: relative;
+          background: linear-gradient(135deg, #093d6a, #0d47a1, #0d47b1, #1976d2, #2196F3);
+      color: #fff;
+      padding: 70px 20px 30px;
+      overflow: hidden;
+    }
+
+    /* Bubble Container */
+    .bubbles {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -50px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 50%;
+      animation: rise linear forwards;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(1); opacity: 0.9; }
+      50% { opacity: 0.6; }
+      100% { transform: translateY(-1200px) scale(0.5); opacity: 0; }
+    }
+
+    /* Curved Top SVG */
+    .footer svg {
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 100%;
+      height: 120px; /* thoda bada */
+      border: none;
+      
+    }
+
+    .footer svg path {
+      fill: #f6eff2;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-col h3 {
+      margin-bottom: 15px;
+      font-size: 1.2em;
+      position: relative;
+      
+      color: #fff;
+      
+    }
+    .footer-col h3::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: -5px;
+      width: 40px; height: 3px;
+      background: #ffff;
+      border-radius: 3px;
+    }
+
+    .footer-col ul { list-style: none; padding: 0; margin: 0; }
+    .footer-col ul li { margin: 10px 0; }
+    .footer-col ul li a {
+      color: #ddd;
+      text-decoration: none;
+      transition: 0.3s;
+      margin-top: 0;
+    }
+    .footer-col ul li a:hover { color: #fff; padding-left: 6px; }
+
+    /* Social Links */
+    .social-links a {
+      display: inline-block;
+      margin-right: 15px;
+      color: #ddd;
+      font-size: 22px;
+      transition: all 0.3s ease;
+    }
+    .social-links a:hover {
+      color: #000f54;
+      transform: scale(1.2) rotate(6deg);
+      text-shadow: 0 0 10px #000f549c;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #ccc;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 15px;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .footer { padding: 50px 15px; }
+      .social-links a { margin-right: 10px; font-size: 20px; }
+    }
+  </style>
+ <!-- Footer -->
+  <footer class="footer">
+    <!-- Bubbles Layer -->
+    <div class="bubbles" id="bubbles"></div>
+
+    <!-- Responsive SVG Curve -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path d="M0,224L48,213.3C96,203,192,181,288,160C384,139,480,117,576,133.3C672,149,768,203,864,202.7C960,203,1056,149,1152,144C1248,139,1344,181,1392,202.7L1440,224L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"/>
+    </svg>
+
+    <div class="footer-container">
+      <div class="footer-col">
+        <h3 style="text-align: left;padding-top:50px;">About Map App</h3>
+        <p>Real-time navigation and map data for BSP Bhilai and nearby areas. Always stay updated with our smart map services.</p>
+      </div>
+      <div class="footer-col">
+        <h3 style="text-align: left;">Quick Links</h3>
+        <ul>
+          <li><i class="fas fa-map-marker-alt"></i> <a href="https://www.google.com/maps/dir/21.195726,81.383/21.1953498,81.3849368/@21.1961173,81.3810608,17z/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI1MDkyNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" data-external="true">Live Map</a></li>
+          <li><i class="fas fa-globe"></i> <a href="https://sail-bhilaisteel.com/" target="_blank"  rel="noopener noreferrer" data-external="true">BSP Official Website</a></li>
+          <li><i class="fas fa-globe"></i> <a href="https://sail.co.in/en/plants/about-bhilai-steel-plant" rel="noopener noreferrer" data-external="true">SAIL Official Website</a></li>
+                    <li><i class="fas fa-globe"></i> <a href="https://sailsuraksha.com/" target="_blank"  rel="noopener noreferrer" data-external="true">SAIL Suraksha Official Website</a></li>
+
+          <li><i class="fas fa-phone-alt"></i></a> <a href="https://sail.co.in/en/bsp-contact-us" target="_blank" rel="noopener noreferrer" data-external="true">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3 style="text-align: left;">Contact</h3>
+        <ul>
+          <li>Email : support@mapapp.com</li>
+          <li>Phone : +91 85809 76323</li>
+          <li>Location : BSP Bhilai, India</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3 style="text-align: left;">Follow Us</h3>
+       <div class="social-links">
+  <a href="https://www.facebook.com/SAILBSP/" data-external="true"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://x.com/SAILsteel" data-external="true"><i class="fab fa-twitter"></i></a>
+  <a href="https://www.youtube.com/channel/UCdJHO2kdM8ceS4pJuT_5JFw" data-external="true"><i class="fab fa-youtube"></i></a>
+  <a href="https://www.instagram.com/steelauthority/" data-external="true"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.linkedin.com/company/steel-authority-of-india-limited/" data-external="true"><i class="fab fa-linkedin-in"></i></a>
+  <a href="https://t.me/SteelAuthorityofIndiaLimited" data-external="true"><i class="fab fa-telegram"></i></a>
+</div>
+      </div>
+    </div>
+
+    <div class="footer-bottom" style="padding-bottom: 30px;">
+      © 2025 Bhilai Steel Plant | Developed & Maintained by C&IT, BSP (Bhilai).
+    </div>
+  </footer>
+
+<!-- External Link Handler -->
+<script>
+(function () {
+  function openInChrome(href) {
+    const ua = navigator.userAgent || '';
+    const isAndroid = /Android/i.test(ua);
+
+    if (isAndroid) {
+      try {
+        const url = new URL(href);
+        // intent://host/path?search#hash#Intent;scheme=https;package=com.android.chrome;end
+        const intentURL =
+          `intent://${url.host}${url.pathname}${url.search}${url.hash}` +
+          `#Intent;scheme=${url.protocol.replace(':','')};package=com.android.chrome;end`;
+
+        // Force Chrome open
+        window.location.href = intentURL;
+        return;
+      } catch (err) {
+        console.error("Intent build failed:", err);
+      }
+    }
+
+    // Fallback for desktop / iOS
+    window.open(href, '_blank', 'noopener,noreferrer');
+  }
+
+  document.addEventListener('click', function (e) {
+    const a = e.target.closest && e.target.closest('a[data-external="true"]');
+    if (!a) return;
+
+    const href = a.getAttribute('href');
+    if (!href) return;
+
+    // Only handle http/https links
+    if (!href.startsWith('http://') && !href.startsWith('https://')) {
+      return;
+    }
+
+    e.preventDefault();
+    openInChrome(href);
+  }, false);
+})();
+</script>
+
+  
+<script>
+    // Super dense random bubbles generator
+    function createBubble() {
+      const bubble = document.createElement("div");
+      bubble.classList.add("bubble");
+
+      // Random size
+      const size = Math.random() * 25 + 8; // 8px - 33px
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+
+      // Random horizontal position
+      bubble.style.left = `${Math.random() * 100}%`;
+
+      // Random speed
+      const duration = Math.random() * 10 + 5; // 5s - 15s
+      bubble.style.animationDuration = `${duration}s`;
+
+      // Random horizontal drift
+      const drift = Math.random() * 100 - 50; // -50px to +50px
+      bubble.style.setProperty("--drift", `${drift}px`);
+
+      // Random opacity
+      bubble.style.opacity = (Math.random() * 0.5 + 0.3).toFixed(2);
+
+      document.getElementById("bubbles").appendChild(bubble);
+
+      // Remove after animation
+      setTimeout(() => bubble.remove(), duration * 1000);
+    }
+
+    // Generate a lot of bubbles
+    setInterval(() => {
+      for (let i = 0; i < 3; i++) createBubble();
+    }, 150);
+  </script>
+  </section>
+
+  <!-- Option Page -->
+   <style>
+    .topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: var(--accent); /* तुम्हारा blue theme */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* ताकि बाकी content topbar के नीचे से शुरू हो */
+.page {
+  padding-top: 56px;
+}
+
+   </style>
+  <section id="optionPage" class="page">
+    <header class="topbar">
+      <button id="backBtn2" class="icon-btn"><i class="fa-solid fa-arrow-left"></i></button>
+      <h2 id="optTitle" class="steel-text"></h2>
+    </header>
+    <div class="section-card" style="margin-top: 70px;display: flex; align-items: center;justify-content: space-between;">
+      
+      <button id="viewDetailBtn" class="action-btn animated-btn" style="width: 31.5%;">Details</button>
+      <button id="viewMapBtn" class="action-btn animated-btn" style="width: 31.5%;">Map</button>
+      <button id="viewImageBtn" class="action-btn animated-btn" style="width: 31.5%;">Image</button>
+    </div>
+  </section>
+
+  <!-- Detail Page -->
+  <section id="detailPage" class="page">
+    <header class="topbar">
+      <button id="backBtn3" class="icon-btn"><i class="fa-solid fa-arrow-left"></i></button>
+      <h2 class="steel-text">Details</h2>
+    </header>
+    <div class="section-card" style="margin-top: 70px;">
+      <h3 id="detailName"></h3>
+      <p><b>Coordinates:</b> <span id="detailCoords"></span></p>
+      <a id="gmapLink" target="_blank"><button class="action-btn animated-btn">Open in Google Maps</button></a>
+    </div>
+  </section>
+
+  <!-- Map Page -->
+  <section id="mapPage" class="page">
+    <header class="topbar">
+      <button id="backBtn4" class="icon-btn"><i class="fa-solid fa-arrow-left"></i></button>
+      <h2 class="steel-text">Map</h2>
+    </header>
+    <div class="section-card" style="margin-top: 50px;">
+      <div id="map"></div>
+    </div>
+  </section>
+
+  <!-- Image Page -->
+<section id="imagePage" class="page">
+  <header class="topbar">
+    <button id="backBtn5" class="icon-btn"><i class="fa-solid fa-arrow-left"></i></button>
+    <h2 class="steel-text">Location Image</h2>
+  </header>
+  <div class="section-card" style="margin-top: 70px;">
+    <!-- Blur class initially -->
+    <img id="imageView" src="" class="loading-blur" style="width:100%;border-radius:18px;transition:filter 0.5s ease;"/>
+  </div>
+  <p>Note: Location map images are auto-generated via Rohit World Maps system.</p>
+</section>
+
+
+  <!-- Install banner -->
+  <div id="installBanner" class="install-banner" style="display:none">
+    <button id="installBtn" class="small-btn">Install App</button>
+  </div>
+  <audio id="aiDetectAudio" src="https://orangefreesounds.com/wp-content/uploads/2023/05/Artificial-intelligence-sound.mp3" autoplay preload="auto" volume="0" muted style="display:none;"></audio>
+
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+/* Data */
+const locations = [
+  { name: 'BSP (Main Gate)', lat: 21.19534981265326, lon: 81.38493682098803, note: 'Exact plant centre (GEM Wiki)', img: 'https://new-img.patrika.com/upload/images/2017/06/23/BSP-main-gate-logo-1498196814_835x547.jpg' },
+  { name: 'Ispat Bhavan', lat: 21.197313, lon: 81.3846, note: 'OSM / MapCarta plant location', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4npae1qrO12FYHZGRrD7PPhY3JyfPuDbgklAq5nMZpRJYVfAt0DfLMXxfuHuyED-GGqrOk6W4wXeTuJkofnY6TiPbcJI5-xsRJs4zXWKPGpTFX_mw7vjZ8JlxDcFzXTJZBn3W-8XxQ=w426-h240-k-no' },
+  { name: 'HRDC', lat: 21.195726, lon: 81.383, note: 'OSM / MapCarta plant location', img: 'https://lh3.googleusercontent.com/geougc-cs/AB3l90ADFFouelh2RRkHmYcyb6_yUmH3PmbVGZ9QJNvmD_FSkyM8lzey8_NmgcMaBeEY2oTu2KU4QIaol4C2SkONWC8VRTvMIbkGq1-Cz6vtiu3u_jC3xsJvUDe5lqsLB04JtyRgVtPaYw=w750-h563-p' },
+  { name: 'COKE-OVEN', lat: 21.167087068297338, lon: 81.39564866601432, note: 'placeholder — verify manually', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nq0O5wG-rR5R3sNhH-bRjtHR8U3xqbIz90AqLKxhurndPGv_oESDYhnzLQA2CMCUMOxmHrszza6QmAkstyZFqMRSn69a24Yg3t86WXRBd4AB5MIS9OBYJGbPtic_wAEpOEY14VQhA=w408-h725-k-no' },
+  { name: 'Environment', lat: 21.194804076866316, lon: 81.38521674344119, note: 'Wikimapia approx', img: 'https://maps.gstatic.com/tactile/pane/default_geocode-2x.png' },
+  { name: 'ERS', lat: 21.19096195114651, lon: 81.38275690666099, note: 'Wikimapia approx', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqEQzZkG163vo9g7QgxL3BjF4xRaRxCIF2JnHJmTkZIMUZ8esXsXxutOPyCozGEEkUDGL8gZZk_YVqJwhkAAunquv6P5cXxmdw4PuKi1QLDj1-TNZmxCJ4qkNhDJCz-tqM9UwKl=w450-h240-k-no' },
+  { name: 'MARS-1', lat: 21.193611, lon: 81.383889, note: 'Wikimapia approx', img: 'https://maps.gstatic.com/tactile/pane/default_geocode-2x.png' },
+  { name: 'MWRM', lat: 21.200009249332982, lon: 81.39729673549678, note: 'Wikimapia approx', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4noTJHDkfAmM3xrewTpggAh8A4uMzsl3pf2MC-ue3o2v27uW9EYuu7tn6v3V-ngFdqTa7rfhx0ldSHLH1BhRbFlEbtjLtmiZHKUoD--2fVGsMwaFs_Em8LsKdbsddk3_9TKNUeo=w408-h306-k-no' },
+  { name: 'OHP', lat: 21.181900162334813, lon:   81.39672111692786, note: 'Wikimapia approx', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrHpG1CgbVg-Vs-oOmm6-kZ_Rrt-QuGof1DpNwjecRXxkuKJlJi4rB6i2-fI6tCBAGITRqIWGHa61D_s5Fx9oRQEfH36ijLiTEmAstbRETaXadSrwJcLaHr-JPPHLygLxNcOZihlehCw50=w408-h408-k-no' },
+  { name: 'Plate Mill', lat: 21.172500, lon: 81.375556, note: 'Wikimapia approx', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4noRVNuigLrx97Q0yhPdv7eTlxRIG054NqtJTJ5br1ft2P6WZyqZ-C4pXqChCJAwaKHKL4Qk5nGnfG21Shgaln5zjZscFwBD3YGJzUmbP0seh_850jUeQO1OetKbRXI4TCOd4UQ=w426-h240-k-no' },
+  { name: 'PSD', lat: 21.19145274466129, lon:  81.38756371893942, note: 'Wikimapia approx', img: 'https://maps.gstatic.com/tactile/pane/default_geocode-2x.png' },
+  { name: 'RCL/ETL/Instrumentation', lat: 21.192147939550324, lon:  81.3882962241646, note: 'Wikimapia approx', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqm1W2GPN4FPCaOr5QVJPqOGsgQwuMypyn92j7oozb0OAg4OJjCC8QpMmd7vP6A_kvfWN4eArMwFaKLZ_0ToYkDfnuH0YDf-fLKfYeZU3cA_PIrbMKAGL67xtTNBsh1Y0Nl6t8=w408-h240-k-no-pi-20-ya0-ro-0-fo100' },
+  { name: 'RSM', lat: 21.198762148358593, lon: 81.38992578446147, note: 'Wikimapia approx', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrcwWQcd3w365XUp9wM_I9YkjebLlUGU6G7BV6x6jZKKJQHUgSDJP8qHCJ_2_qQ6xNQfEI6Clb1zbaFEf_ZuT2H2cPh7JSxKXkA4WyDd8UeepXfU2PBbtbPw6q6cJCtj7ks8dOl2w=s644-k-no' },
+  { name: 'RMP-3', lat: 21.191513158613546, lon: 81.40496305948326, note: 'Wikimapia approx', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nr0tdJQpQcFVp3SdY3GINdaU45FVQoH6ejvVxyelZims_f0PjEZOBCgdCun8QHMq18o-IX_pBgN9dJs7S95fY5qIIXJAM8pze-G8JqfB5Sg1zOBKCjZ4ANepZIXCgET6npSXo-wZg=w408-h306-k-no' },
+  { name: 'SMS-III', lat: 21.196677035500507, lon: 81.39536601703001, note: 'Wikimapia approx', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nr6s6FQVO1y3VVy2B_bWtpnSmhjOeJ6BWZHNqfhJFhckQTRxgibsmsuGODFTnYVGN2UGRetK4MYKyglno8IofBHJtA5c6nNcACLn9CoUCPaI7ygC6L6kUa5kZt08tnc-3FkjLANbA=w203-h271-k-no' },
+  { name: 'T&D Org.', lat: 21.19510608614515, lon: 81.38510886271068 , note: 'Wikimapia approx', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4npTHwWHWSSGuTiWl_J17wjLkrJ_-BL3zAceAW7GzC3-pNzRSFHtXLKVJ2E-hQo-6uuQ0MGxjVx8mOoOuOv3_jZehgz8oD5A9rlQRiR3rzfBCSN0s1gjnFBQtPhLQM9jsS9ZIhpe=w203-h114-k-no' },
+  { name: 'URM', lat: 21.199523205460107, lon: 81.38509622602177, note: 'Wikimapia approx', img: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4noeDvHE7uv5IIYYZs2IcFzzNdyAyEqQbw64i3VGi0DG0y15bOrryjYMG7GuQAegcxnsmaiPu0M1Km-IpeRVXqRy90owE8HbqyIxC2LNVTpqNxHmp151QBBnaw2RG7HUkFskCwfz=w408-h306-k-no' },
+  { name: 'WMD', lat: 21.188760127234286, lon: 81.38751716450321, note: 'Wikimapia approx', img: 'https://maps.gstatic.com/tactile/pane/default_geocode-2x.png' },
+  { name: 'Other departments', lat: 21.193611, lon: 81.383889, note: 'Wikimapia approx', img: 'https://maps.gstatic.com/tactile/pane/default_geocode-2x.png' },
+
+  // ✅ बाकी departments में भी img property add कर लेना  
+];
+
+
+/* Elements */
+const splash=document.getElementById('splash');
+const locationsPage=document.getElementById('locationsPage');
+const optionPage=document.getElementById('optionPage');
+const detailPage=document.getElementById('detailPage');
+const mapPage=document.getElementById('mapPage');
+const imagePage=document.getElementById('imagePage');
+const listWrap=document.getElementById('listWrap');
+const optTitle=document.getElementById('optTitle');
+const detailName=document.getElementById('detailName');
+const detailCoords=document.getElementById('detailCoords');
+const gmapLink=document.getElementById('gmapLink');
+const imageView=document.getElementById('imageView');
+
+let currentLoc=null;
+let map=null;
+
+/* Render List oR Car List Loaction */
+/* Render List with right-side animated location pin */
+
+
+
+/* Navigation Helper */
+function showPage(page,title){
+  [splash,locationsPage,optionPage,detailPage,mapPage,imagePage].forEach(p=>p.style.display='none');
+  page.style.display='flex';
+
+  if(page===optionPage) optTitle.textContent=title;
+
+  if(page===detailPage){
+    detailName.textContent=currentLoc.name;
+    detailCoords.textContent=currentLoc.lat+', '+currentLoc.lon;
+    // ye jo niche ka code diya hai na gmapLink.onclick = (e) => {...} wal isko replace bhi kar sakye hai   gmapLink.href=`https://www.google.com/maps/dir/?api=1&destination=${currentLoc.lat},${currentLoc.lon}`;
+
+ gmapLink.onclick = (e) => {
+  e.preventDefault();
+
+  // Geo URI - directly mobile Google Maps open karega
+  const appUrl = `geo:${currentLoc.lat},${currentLoc.lon}?q=${currentLoc.lat},${currentLoc.lon}(${encodeURIComponent(currentLoc.name)})`;
+
+  // Direct redirect
+  window.location.href = appUrl;
+};
+
+
+}
+
+  if(page===mapPage){
+    if(!map){
+      map=L.map('map').setView([currentLoc.lat,currentLoc.lon],16);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© Developed by Rohit Singh'}).addTo(map);
+      
+    }
+    map.eachLayer(layer=>{
+      if(layer instanceof L.Marker && !layer._url){
+        map.removeLayer(layer);
+      }
+    });
+    const htmlMarker=L.divIcon({
+      className:'',
+      html:`
+        <div style="position:relative;display:flex;flex-direction:column;align-items:center;">
+          <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" style="width:36px;height:36px;">
+          <div class="blinking-circle"></div>
+        </div>
+      `,
+      iconSize:[36,50],
+      iconAnchor:[18,50]
+    });
+    const marker=L.marker([currentLoc.lat,currentLoc.lon],{icon:htmlMarker}).addTo(map);
+    marker.bindPopup(currentLoc.name).openPopup();
+    map.setView([currentLoc.lat,currentLoc.lon],16);
+  }
+
+  if (page === imagePage) {
+  imageView.classList.add("loading-blur"); // blur start
+  imageView.src = currentLoc.img || 'https://via.placeholder.com/600x400?text=No+Image';
+  imageView.onload = () => {
+    setTimeout(() => {
+      imageView.classList.remove("loading-blur"); // blur remove after load
+    }, 5000); // thoda delay for smooth effect
+  };
+}
+
+}
+
+/* Buttons */
+document.getElementById('showLocations').onclick=()=>{showPage(locationsPage);renderList();};
+document.getElementById('backBtn1').onclick=()=>showPage(splash);
+document.getElementById('backBtn2').onclick=()=>showPage(locationsPage);
+document.getElementById('backBtn3').onclick=()=>showPage(optionPage,currentLoc.name);
+document.getElementById('backBtn4').onclick=()=>showPage(optionPage,currentLoc.name);
+document.getElementById('viewDetailBtn').onclick=()=>showPage(detailPage);
+document.getElementById('viewMapBtn').onclick=()=>showPage(mapPage);
+document.getElementById('viewImageBtn').onclick=()=>showPage(imagePage);
+document.getElementById('backBtn5').onclick=()=>showPage(optionPage,currentLoc.name);
+
+// Splash launch animation
+window.addEventListener("load", () => {
+  const splash = document.getElementById("splash");
+  setTimeout(() => {
+    splash.classList.add("show");
+  }, 200); // delay for effect start
+});
+
+
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();     // right-click disable
+  });
+
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.onkeydown = function(e) {
+    if (e.key === "F12" || 
+        (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+        (e.ctrlKey && e.key === 'U')) {
+      return false;
+    }
+  };
+
+
+window.addEventListener('load', () => {
+  const audio = document.getElementById("startupSound");
+  audio.play().catch(e => {
+    console.log("Autoplay prevented by browser. User interaction required.");
+  });
+
+  setTimeout(() => {
+    document.getElementById('loadingScreen').style.display = 'none'; // splash hide
+    document.getElementById('appContent').classList.remove('opacity-0'); // main content show
+  }, 2000); // 2 sec delay
+});
+
+</script>
+<script>
+/* --------- ROBOTIC MACHINE VOICE FUNCTION (INDIAN ENGLISH) --------- */
+let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let masterGain = audioCtx.createGain();
+masterGain.connect(audioCtx.destination);
+
+function speakRobot(text) {
+    if (!('speechSynthesis' in window)) return;
+
+    // Create utterance
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "hi-IN";          // Indian English
+   // utterance.volume = 1;              // Full volume
+   // utterance.pitch = 1.6;             // High pitch for robotic feel
+   // utterance.rate = 1.3;              // Faster, machine-like
+
+    // Choose a preferred voice (Google/Alloy/Samantha)
+    const voices = speechSynthesis.getVoices();
+    let preferred = voices.find(v => /Indian|Microsoft|Google|Alloy|Samantha/i.test(v.name));
+    if (preferred) utterance.voice = preferred;
+
+    // Cancel previous speech and speak new text
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utterance);
+
+    // Metallic overlay / mechanical clicks
+    const click = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    click.type = 'square';
+    click.frequency.value = 800; // metallic click frequency
+    gain.gain.value = 0;
+    click.connect(gain);
+    gain.connect(masterGain);
+    click.start();
+
+    gain.gain.setValueAtTime(0, audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.03, audioCtx.currentTime + 0.02);
+    gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.15);
+
+    setTimeout(() => {
+        try { click.stop(); click.disconnect(); gain.disconnect(); } catch (e) {}
+    }, 180);
+}
+
+/* --------- ROBOTIC SPEECH FLOW --------- */
+
+// Splash load
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        speakRobot("Bhilai Steel Plant Map is online. Please click on the Locations button.");
+    }, 2500);
+});
+
+// Locations button
+document.getElementById('showLocations').onclick = () => {
+    showPage(locationsPage);
+    renderList();
+    speakRobot("Please select a location.");
+};
+
+// Location list render
+function renderList() {
+    listWrap.innerHTML = '';
+    locations.forEach(loc => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.textContent = loc.name;
+        card.style.position = 'relative';
+
+        card.onclick = () => { 
+            currentLoc = loc; 
+            showPage(optionPage, loc.name); 
+            speakRobot("Please select any category.");
+        };
+
+        listWrap.appendChild(card);
+    });
+}
+
+// Option buttons
+document.getElementById('viewDetailBtn').onclick = () => {
+    showPage(detailPage);
+    speakRobot("You selected view details. Please click on Google Map to continue.");
+};
+
+document.getElementById('viewMapBtn').onclick = () => {
+    showPage(mapPage);
+
+    // Agar Other departments selected ho
+    if(currentLoc.name === "Other departments") {
+        speakRobot("You selected Other Departments. Showing all departments from Human Resource Development Centre.");
+
+        // Map setup
+        if(!map){
+            map = L.map('map').setView([mainLocation.lat, mainLocation.lon], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© Developed by Rohit Singh'
+            }).addTo(map);
+        }
+
+        // Clear previous markers/lines
+        map.eachLayer(layer => {
+            if(layer instanceof L.Marker || layer instanceof L.Polyline) map.removeLayer(layer);
+        });
+
+        // Main HRD marker
+        const mainMarker = L.marker([mainLocation.lat, mainLocation.lon], {
+            icon: L.divIcon({
+                className: '',
+                html: `<div style="position:relative;display:flex;flex-direction:column;align-items:center;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" style="width:36px;height:36px;">
+                        <div class="blinking-circle"></div>
+                       </div>`,
+                iconSize: [36,50],
+                iconAnchor: [18,50]
+            })
+        }).addTo(map).bindPopup("Human Resource Development Centre, BSP").openPopup();
+
+        // Loop through other department locations (except HRD itself)
+        locations.forEach(loc => {
+            if(loc.name !== "HRDC"){
+                const selMarker = L.marker([loc.lat, loc.lon], {
+                    icon: L.divIcon({
+                        className: '',
+                        html: `<div style="position:relative;display:flex;flex-direction:column;align-items:center;">
+                                <img src="${loc.img || 'https://cdn-icons-png.flaticon.com/512/684/684908.png'}" style="width:36px;height:36px;border-radius:5px">
+                                <div class="blinking-circle"></div>
+                               </div>`,
+                        iconSize: [36,50],
+                        iconAnchor: [18,50]
+                    })
+                }).addTo(map).bindPopup(loc.name);
+
+                // Line from main to this department
+                const line = L.polyline([[mainLocation.lat, mainLocation.lon], [loc.lat, loc.lon]], {
+                    color: 'red',
+                    weight: 3,
+                    opacity: 0.7,
+                }).addTo(map);
+
+                // Distance calculation & label
+                const distance = map.distance(
+                    L.latLng(mainLocation.lat, mainLocation.lon),
+                    L.latLng(loc.lat, loc.lon)
+                ) / 1000;
+
+                const midLat = (mainLocation.lat + loc.lat) / 2;
+                const midLon = (mainLocation.lon + loc.lon) / 2;
+
+                L.marker([midLat, midLon], {
+                    icon: L.divIcon({
+                        className: 'distance-label',
+                        html: `<div style=" color: #000; background: #af202000; padding: 2px 6px; border-radius: 6px; font-size: 12px;font-family:monospace;font-weight:900;">
+                                 ${distance.toFixed(2)} km
+                               </div>`
+                    })
+                }).addTo(map);
+
+                // Robot announces distance
+                speakRobot(`${loc.name} is ${distance.toFixed(2)} kilometers from Human Resource Development Centre.`);
+            }
+        });
+
+        map.fitBounds(map.getBounds(), {padding: [50,50]});
+    } else {
+        // Normal location map code
+        showNormalLocationMap();
+    }
+};
+
+
+document.getElementById('viewImageBtn').onclick = () => {
+    showPage(imagePage);
+    speakRobot("You selected location image. Loading image now.");
+};
+
+// Google Map button
+gmapLink.addEventListener("click", () => {
+    speakRobot("Opening Google Map now.");
+});
+
+</script>
+
+
+
+
+<style>
+/* Fixed bottom datetime */
+#fixedDatetime {
+  position: fixed; bottom: 0; width: 100%;
+  background: #fff; color: #000f54;
+  font-family: monospace; font-weight: 600; text-align: center;
+  padding: 6px 0; border-top-left-radius: 50px; border-top-right-radius: 50px;
+  z-index: 9999; transition: transform 0.3s ease-out;
+}
+#timeDisplay { font-size: 1em; color: #000; }
+#swipeHandle { font-size: 0.8em; color: #555; cursor: pointer; user-select: none; padding: 2px 0; }
+
+/* Contact Form Container */
+#contactFormContainer {
+  position: fixed; bottom: -100%; left: 0; width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+  display: flex; justify-content: center; align-items: flex-end;
+  z-index: 10000; transition: bottom 0.5s ease-in-out;height: 100%;
+}
+#contactForm {
+  width: 100%; max-width: 400px; background: #fff;
+  border-radius: 20px 20px 0 0; padding: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  display: flex; flex-direction: column; gap: 15px;
+  position: relative;
+}
+#contactForm::before{
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px; height: 200px;
+  background-image: url(https://statuesque-tarsier-ad4726.netlify.app/SAIL-logo-5.png);
+  background-size: contain; background-repeat: no-repeat;
+  opacity: 0.1; pointer-events: none; z-index: 0;
+}
+
+h3 { text-align: center; font-size: 1.2em; color: #333; }
+
+/* Inputs */
+  #contactForm input, #contactForm textarea {
+      padding: 12px; border: 2px solid #ccc; border-radius: 8px;
+      width: 100%; font-size: 1em; transition: border-color 0.3s;
+      background: none;
+      color: #072f52;
+      margin-bottom: 10px;
+    }
+    #contactForm input:focus, #contactForm textarea:focus {
+      border-color: #2196F3; outline: none;
+      background: none;
+      color: #072f52;
+    }
+
+/* Buttons */
+#contactForm button {
+  padding: 12px; border: none; border-radius: 12px;
+  background: #2196F3; color: #fff; font-weight: bold;
+  cursor: pointer; transition: background-color 0.3s;
+}
+#contactForm button:hover { background-color: #1e88e5; }
+
+/* Errors */
+.error { color: red; font-size: 0.9em; display: none; }
+
+/* Blur background */
+.blurred { filter: blur(4px); pointer-events: none; }
+
+/* Loading Popup */
+#loadingPopup {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: #2195f300; color: #fff; padding: 25px;
+  border-radius: 15px; text-align: center; z-index: 11000;
+  display: none;
+}
+
+
+/* Thank You Popup */
+#thankYouPopup {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: #072f52; color: #fff; padding: 25px;
+  border-radius: 15px; text-align: center; z-index: 11000;
+  display: none; width: 90%; max-width: 400px;
+}
+
+#thankYouPopup button{margin-top: 10px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #e2e1e0;
+    color: #a49e9e;
+    border: 1px solid;}
+
+
+/* Error Popup */
+#errorPopup {
+  position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+  background: #e53935; color: #fff; padding: 1px 10px;
+  border-radius: 10px; text-align: center; z-index: 12000;
+  display: none; width: 90%; max-width: 400px;
+  animation: slideDown 0.5s forwards;
+}
+@keyframes slideDown { 0% { top: -100px; opacity: 0; } 100% { top: 10%; opacity: 1; } }
+
+#closeError, #closeThankYou {
+  margin-top: 0px; padding: 8px 16px;
+  border-radius: 8px; font-weight: bold; cursor: pointer;
+  background:#e2e1e0; color:#a49e9e; border:1px solid;
+}
+
+@media (max-width: 768px) {
+      #contactForm { max-width: 100%; padding: 15px; }
+      #swipeHandle { font-size: 0.8em; }
+    }
+</style>
+<!-- Body में कहीं भी डालो -->
+<!-- Fixed bottom datetime + swipe handle -->
+<div id="mainContent">
+  <!-- DateTime -->
+  <div id="fixedDatetime">
+    <div id="swipeHandle" style="display: flex;flex-direction: row;align-items: center;justify-content: center;">
+      <i class="fa-solid fa-angle-up" style="margin-right: 8px;"></i>
+      <p>Swipe up for Contact Us</p>
+    </div>
+    <div id="timeDisplay" style="color: #093d6a;"></div>
+  </div>
+
+  <!-- Contact Form -->
+  <div id="contactFormContainer">
+    <div id="contactForm" style="padding-top:0;">
+      <h3 style="color:  #093d6a;">Contact IT Support
+        <br><p style="color: #555;font-size: 0.7em;margin: 0;">Department of C&IT, BSP (Bhilai)</p>
+      </h3>
+      
+      <form id="contactFormElement" action="https://formsubmit.co/f1b93c245dcedbaf4e056198273fb005" method="POST">
+<input type="hidden" name="_subject" value="📩 BSP C&IT Department, Bhilai | New Contact Form Submission">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+<input type="hidden" name="_autoresponse" value="Dear User,
+
+Thank you for contacting BSP C&IT Department. We have received your submission and our team will review it shortly. You can expect a response within 2–3 business days.
+
+We appreciate your patience and interest in BSP services.
+
+Best regards,
+BSP C&IT Deptt.">
+
+      <input type="hidden" name="_next" value="thankyou.html">
+
+      <input type="text" id="name" name="Name" placeholder="Your Name"/>
+      <div id="nameError" class="error">Please enter your name.</div>
+
+      <input type="email" id="email" name="Email" placeholder="Your Email"/>
+      <div id="emailError" class="error">Please enter a valid email address.</div>
+
+      <input type="tel" id="phone" name="Phone" placeholder="Your Phone"/>
+      <div id="phoneError" class="error">Please enter a valid phone number.</div>
+
+      <textarea id="message" name="Message" placeholder="Your Message..." rows="5"></textarea>
+      <div id="messageError" class="error">Please enter a message.</div>
+
+      <div style="display:flex;justify-content:space-evenly;">
+        <button type="submit" id="submitBtn" class="animated-btn" style="width:40%;">Submit</button>
+        <button type="button" id="closeFormBtn" style="width:40%;background:#e2e1e0;color:#a49e9e;border:1px solid;cursor:pointer;">Cancel</button>
+      </div>
+    </form>
+ 
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading -->
+<div id="loadingPopup">
+  <div style="height: 100%;background: rgba(0, 0, 0, 0);width: 100%;border-radius: 100%;">
+  <img src="https://d85ecz8votkqa.cloudfront.net/images/loading.gif" alt="loading" style="height: 150px;"> 
+</div>
+<br>
+  <p></p>
+</div>
+
+<!-- Thank You Popup -->
+<div id="thankYouPopup" style="border-top: 5px solid #1e88e5;border-bottom: 5px solid #1e88e5;">
+  <div id="successIcon">
+      <div style="display: flex;align-items: center;justify-content: center;">
+      <img style="height: 150px;" src="https://www.lappymaker.com/images/greentick-unscreen.gif" alt="success">
+
+    </div>    <!--<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 12l6 6L20 6"></path></svg>-->
+  </div>
+  <p id="thankYouMsg"></p>
+  <p>Email : <span id="partialEmail"></span> <br> Phone : <span id="partialPhone"></span></p>
+  <button id="closeThankYou">Okay !</button>
+      <button id="viewReceiptBtn" class="viewBtn">Track Status</button>
+
+</div>
+
+<!-- Error Popup -->
+<div id="errorPopup" style="max-width: 80%;background-color: #e74c3c;text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);border-radius: 50px;color: #fff;
+        font-size: 14px;box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+  <div style="display: flex;align-items: center;justify-content: space-between;"><i class="fa-solid fa-circle-exclamation"></i> <p id="errorMessage" style="font-size: small;font-weight: 900;margin-right: 85px;
+    font-family: monospace;"></p><button id="closeError" style="background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;"><svg width="20" height="20" viewBox="0 0 24 24">
+        <path fill="#fff" d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12l-4.89 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.89a1 1 0 0 0 1.41-1.41L13.41 12l4.89-4.89a1 1 0 0 0 0-1.4z"></path>
+      </svg></button>
+  </div>
+</div>
+
+
+
+<script>
+/* ---------- Main Location ---------- */
+const mainLocation = locations.find(loc => loc.name.includes("HRDC"));
+
+/* ---------- Show Page Function ---------- */
+function showPage(page, title) {
+    [splash, locationsPage, optionPage, detailPage, mapPage, imagePage].forEach(p => p.style.display = 'none');
+    page.style.display = 'flex';
+
+    if (page === optionPage) optTitle.textContent = title;
+
+    if (page === detailPage) {
+        detailName.textContent = currentLoc.name;
+        detailCoords.textContent = currentLoc.lat + ', ' + currentLoc.lon;
+
+       gmapLink.onclick = (e) => {
+    e.preventDefault();
+
+    if(currentLoc.name === "Other departments"){
+        // Other departments: origin fixed, destination empty
+        const url = `https://www.google.com/maps/dir/?api=1&origin=${mainLocation.lat},${mainLocation.lon}&destination=`;
+        window.open(url, "_blank");
+        speakRobot("Opening Google Map now.");
+    } else {
+        // Normal locations: origin HRD, destination = selected location
+        const url = `https://www.google.com/maps/dir/?api=1&origin=${mainLocation.lat},${mainLocation.lon}&destination=${currentLoc.lat},${currentLoc.lon}`;
+        window.open(url, "_blank");
+        speakRobot(`Opening Google Map now.`);
+    }
+};
+
+    }
+
+    if (page === mapPage) {
+        if (!map) {
+            map = L.map('map').setView([mainLocation.lat, mainLocation.lon], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© Developed by Rohit Singh'
+            }).addTo(map);
+        }
+
+        // Remove previous markers/lines
+        map.eachLayer(layer => {
+            if (layer instanceof L.Marker || layer instanceof L.Polyline) map.removeLayer(layer);
+        });
+
+        // Marker icon with blinking image
+        const htmlMarker = L.divIcon({
+            className: '',
+            html: `
+            <div style="position:relative;display:flex;flex-direction:column;align-items:center;">
+              <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" style="width:36px;height:36px;">
+              <div class="blinking-circle"></div>
+            </div>
+            `,
+            iconSize: [36, 50],
+            iconAnchor: [18, 25]
+        });
+
+        // Main location marker
+        L.marker([mainLocation.lat, mainLocation.lon], {icon: htmlMarker})
+          .addTo(map)
+          .bindPopup("Human Resource Development Centre, BSP").openPopup();
+
+        // Selected location marker
+        L.marker([currentLoc.lat, currentLoc.lon], {icon: htmlMarker})
+          .addTo(map)
+          .bindPopup(currentLoc.name).openPopup();
+
+        // Draw line between main and selected
+        const line = L.polyline([[mainLocation.lat, mainLocation.lon], [currentLoc.lat, currentLoc.lon]], {
+            color: 'red',
+            weight: 3,
+            opacity: 0.7,
+        }).addTo(map);
+
+        
+
+        // Distance calculation (km)
+        const distance = map.distance(
+            L.latLng(mainLocation.lat, mainLocation.lon),
+            L.latLng(currentLoc.lat, currentLoc.lon)
+        ) / 1000;
+
+        // Distance label in middle of line
+        const midLat = (mainLocation.lat + currentLoc.lat) / 2;
+        const midLon = (mainLocation.lon + currentLoc.lon) / 2;
+
+        L.marker([midLat, midLon], {
+            icon: L.divIcon({
+                className: 'distance-label',
+                html: `<div style=" color: #000; border-radius: 6px; font-size: 12px;font-family:monospace;font-weight:900;">
+                         ${distance.toFixed(2)} km
+                       </div>`
+            })
+        }).addTo(map);
+
+        // Robot voice announces distance
+        speakRobot(`This location is ${distance.toFixed(2)} kilometers from Human Resource Development Center.`);
+
+        map.fitBounds(line.getBounds(), {padding: [50, 50]});
+    }
+
+    if (page === imagePage) {
+        imageView.classList.add("loading-blur");
+        imageView.src = currentLoc.img || 'https://via.placeholder.com/600x400?text=No+Image';
+        imageView.onload = () => {
+            setTimeout(() => {
+                imageView.classList.remove("loading-blur");
+            }, 4000);
+        };
+    }
+}
+
+
+</script>
+
+
+  <script>
+    function showBanner(type) {
+      const banner = document.getElementById(`${type}Banner`);
+      banner.style.display = 'flex';
+
+      // Remove old animation
+      banner.style.animation = 'none';
+      banner.offsetHeight; // trigger reflow
+
+      // Add new animation
+      if (type === 'offline') {
+        banner.style.animation = 'slideInFromRight 0.6s ease-out forwards';
+      } else {
+        banner.style.animation = 'slideInFromLeft 0.6s ease-out forwards';
+      }
+
+      // Auto close after 4 seconds
+      setTimeout(() => {
+        if (banner.style.display === 'flex') {
+          if (type === 'offline') {
+            banner.style.animation = 'slideOutToRight 0.6s ease-in forwards';
+          } else {
+            banner.style.animation = 'slideOutToLeft 0.6s ease-in forwards';
+          }
+
+          setTimeout(() => {
+            banner.style.display = 'none';
+          }, 600);
+        }
+      }, 4000);
+    }
+
+    function closeBanner(id) {
+      const banner = document.getElementById(id);
+      if (id === 'offlineBanner') {
+        banner.style.animation = 'slideOutToRight 0.6s ease-in forwards';
+      } else {
+        banner.style.animation = 'slideOutToLeft 0.6s ease-in forwards';
+      }
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 600);
+    }
+
+    // Listen for online/offline events
+    window.addEventListener('offline', () => showBanner('offline'));
+    window.addEventListener('online', () => showBanner('online'));
+
+    // Optional: Show current status on load
+    if (!navigator.onLine) {
+      showBanner('offline');
+    }
+
+
+    //1. Disable Right-Click (Context Menu) using JavaScript:                      
+document.addEventListener('contextmenu', function(e) {                         
+    e.preventDefault();  // Prevent right-click menu                                  
+});                                                                             
+                                                                                 
+// 2. Disable Image Download (Right-Click Image Download):                      
+document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('contextmenu', function(e) {
+        e.preventDefault();  // Prevent right-click on images
+    });
+    
+    img.addEventListener('dragstart', function(e) {
+        e.preventDefault();  // Disable dragging of images
+    });
+});
+  </script>
+
+
+
+ <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(() => console.log('✅ Service Worker registered'))
+        .catch(error => console.error('❌ Service Worker registration failed:', error));
+    }
+  </script>
+  <script src="app.js"></script>
+
+</body>
+</html>

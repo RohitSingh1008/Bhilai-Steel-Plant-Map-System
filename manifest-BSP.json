@@ -1,0 +1,27 @@
+{
+    "name": "BSP MAP",
+    "short_name": "BSP MAP",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#f6eff2",
+    "theme_color": "#2196F3",
+    "version": "1.1.0",
+    "orientation": "portrait",
+    "prefer_related_applications": false,
+    "icons": [
+      {
+        "src": "https://statuesque-tarsier-ad4726.netlify.app/SAIL-logo-5.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "https://statuesque-tarsier-ad4726.netlify.app/SAIL-logo-5.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  
+
+  
+  
