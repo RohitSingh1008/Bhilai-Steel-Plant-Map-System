@@ -1,4 +1,4 @@
-# 🏭 BSP Map Web App
+# 🏭 Bhilai Steel Plant Map Web App
 
 ## 📖 Overview
 This project is a responsive web-based map application developed during BSP (Bhilai Steel Plant) training using modern web technologies.
